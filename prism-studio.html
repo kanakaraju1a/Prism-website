@@ -1,0 +1,1388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Prism Studio — Color & Style Universe</title>
+
+<!-- Bootstrap 5 -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+<!-- AOS -->
+<link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet"/>
+<!-- Bootstrap Icons -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet"/>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Fraunces:ital,wght@0,300;0,600;0,900;1,300;1,600&family=Bricolage+Grotesque:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+
+<style>
+/* ─── ROOT TOKENS ─── */
+:root {
+  --cream:     #fdf8f0;
+  --warm:      #f5ede0;
+  --sand:      #e8d9c4;
+  --text:      #1a1208;
+  --text2:     #5c4a32;
+  --text3:     #9c8060;
+
+  --coral:     #ff6b47;
+  --tangerine: #ff9f1c;
+  --lemon:     #ffe135;
+  --lime:      #8bc34a;
+  --teal:      #00bfa5;
+  --sky:       #29b6f6;
+  --violet:    #7c4dff;
+  --rose:      #f06292;
+  --ruby:      #e53935;
+
+  --grad-sunset:  linear-gradient(135deg,#ff6b47 0%,#ff9f1c 50%,#ffe135 100%);
+  --grad-ocean:   linear-gradient(135deg,#29b6f6 0%,#00bfa5 100%);
+  --grad-berry:   linear-gradient(135deg,#f06292 0%,#7c4dff 100%);
+  --grad-meadow:  linear-gradient(135deg,#8bc34a 0%,#00bfa5 100%);
+  --grad-candy:   linear-gradient(135deg,#ffe135 0%,#ff6b47 50%,#f06292 100%);
+
+  --font-display: 'Fraunces', serif;
+  --font-ui:      'Syne', sans-serif;
+  --font-body:    'Bricolage Grotesque', sans-serif;
+
+  --radius-sm:  10px;
+  --radius:     20px;
+  --radius-lg:  32px;
+  --shadow-sm:  0 4px 20px rgba(26,18,8,0.08);
+  --shadow:     0 16px 48px rgba(26,18,8,0.12);
+  --shadow-lg:  0 32px 80px rgba(26,18,8,0.18);
+  --transition: 0.45s cubic-bezier(0.23,1,0.32,1);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin:0; padding:0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--cream);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-weight: 400;
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* ─── CUSTOM CURSOR ─── */
+#cur { width:14px; height:14px; background:var(--coral); border-radius:50%; position:fixed; pointer-events:none; z-index:99999; transform:translate(-50%,-50%); transition:width .25s,height .25s,background .25s; mix-blend-mode:multiply; }
+#cur-ring { width:42px; height:42px; border:2px solid var(--coral); border-radius:50%; position:fixed; pointer-events:none; z-index:99998; transform:translate(-50%,-50%); transition:all .18s ease,opacity .3s; opacity:0.45; }
+
+/* ─── SCROLL PROGRESS ─── */
+#prog { position:fixed; top:0; left:0; height:3px; background:var(--grad-sunset); z-index:9999; width:0%; border-radius:0 3px 3px 0; }
+
+/* ─── NAVBAR ─── */
+.navbar {
+  background: rgba(253,248,240,0.88) !important;
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(26,18,8,0.07);
+  padding: 1rem 2rem;
+  transition: padding .4s;
+}
+.navbar.scrolled { padding: .55rem 2rem; box-shadow: var(--shadow-sm); }
+.navbar-brand {
+  font-family: var(--font-ui);
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--text) !important;
+  letter-spacing: -0.03em;
+}
+.navbar-brand .dot { color: var(--coral); }
+.nav-link {
+  font-family: var(--font-ui);
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--text2) !important;
+  padding: .4rem 1rem !important;
+  transition: color .3s;
+}
+.nav-link:hover { color: var(--coral) !important; }
+.nav-pill {
+  background: var(--grad-sunset);
+  color: #fff !important;
+  border-radius: 100px !important;
+  padding: .45rem 1.4rem !important;
+  font-weight: 700 !important;
+  box-shadow: 0 4px 18px rgba(255,107,71,.35);
+  transition: transform .3s, box-shadow .3s;
+}
+.nav-pill:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(255,107,71,.45); color:#fff!important; }
+
+/* ─── HERO ─── */
+.hero {
+  min-height: 100vh;
+  display: flex; align-items: center;
+  padding: 8rem 0 5rem;
+  position: relative;
+  overflow: hidden;
+  background: var(--cream);
+}
+
+/* big decorative arcs */
+.hero::before {
+  content:'';
+  position:absolute; top:-200px; right:-200px;
+  width:700px; height:700px; border-radius:50%;
+  background: radial-gradient(circle, rgba(255,159,28,.18) 0%, transparent 70%);
+  pointer-events:none;
+}
+.hero::after {
+  content:'';
+  position:absolute; bottom:-150px; left:-150px;
+  width:500px; height:500px; border-radius:50%;
+  background: radial-gradient(circle, rgba(140,195,74,.15) 0%, transparent 70%);
+  pointer-events:none;
+}
+
+.hero-chip {
+  display:inline-flex; align-items:center; gap:.55rem;
+  padding:.45rem 1.1rem; border-radius:100px;
+  background: rgba(255,107,71,.1); border:1px solid rgba(255,107,71,.25);
+  font-family:var(--font-ui); font-size:.7rem; letter-spacing:.12em; text-transform:uppercase;
+  color:var(--coral); font-weight:700;
+  animation: slideIn .8s ease both;
+}
+.hero-chip i { font-size:.9rem; }
+
+.hero h1 {
+  font-family: var(--font-display);
+  font-size: clamp(4rem,9vw,7.5rem);
+  font-weight: 900;
+  line-height: .92;
+  letter-spacing: -.04em;
+  color: var(--text);
+  animation: slideIn .8s .1s ease both;
+}
+.hero h1 .italic-line { font-style:italic; font-weight:300; }
+
+.paint-stroke {
+  position: relative; display:inline-block;
+}
+.paint-stroke::after {
+  content:'';
+  position:absolute; bottom:4px; left:-4px; right:-4px;
+  height:14px; z-index:-1;
+  background: var(--grad-sunset);
+  border-radius:4px;
+  transform:rotate(-.6deg);
+  opacity:.55;
+}
+
+.hero-body {
+  font-family: var(--font-body);
+  font-size: 1.05rem; line-height:1.75; color:var(--text2);
+  max-width:460px;
+  animation: slideIn .8s .2s ease both;
+}
+
+.hero-kpi {
+  display:flex; gap:2.5rem; flex-wrap:wrap;
+  animation: slideIn .8s .3s ease both;
+}
+.kpi-n {
+  font-family: var(--font-display);
+  font-size: 2.8rem; font-weight:900; line-height:1;
+  background: var(--grad-sunset);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+}
+.kpi-l { font-family:var(--font-ui); font-size:.7rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--text3); margin-top:.2rem; }
+
+.btn-fire {
+  background:var(--grad-sunset); color:#fff; border:none;
+  padding:.9rem 2.2rem; border-radius:100px;
+  font-family:var(--font-ui); font-weight:700; font-size:.88rem;
+  box-shadow: 0 8px 28px rgba(255,107,71,.4);
+  transition: transform .3s, box-shadow .3s;
+  text-decoration:none; display:inline-flex; align-items:center; gap:.5rem;
+}
+.btn-fire:hover { transform:translateY(-3px); box-shadow:0 16px 40px rgba(255,107,71,.5); color:#fff; }
+
+.btn-outline-warm {
+  background:transparent; color:var(--text);
+  border:2px solid var(--sand); padding:.88rem 2rem;
+  border-radius:100px; font-family:var(--font-ui); font-weight:600; font-size:.88rem;
+  transition:all .3s; text-decoration:none; display:inline-flex; align-items:center; gap:.5rem;
+}
+.btn-outline-warm:hover { border-color:var(--coral); color:var(--coral); transform:translateY(-2px); }
+
+/* hero collage */
+.hero-collage {
+  position:relative; height:540px;
+  animation: slideIn .9s .15s ease both;
+}
+.hc-main {
+  position:absolute; right:0; top:0;
+  width:330px; height:440px;
+  object-fit:cover; border-radius:var(--radius-lg);
+  box-shadow:var(--shadow-lg);
+  transition:transform .6s ease;
+}
+.hc-main:hover { transform:scale(1.02) rotate(-1deg); }
+.hc-sm1 {
+  position:absolute; left:0; bottom:20px;
+  width:210px; height:185px;
+  object-fit:cover; border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  animation:floaty 7s ease-in-out infinite;
+}
+.hc-sm2 {
+  position:absolute; left:55px; top:30px;
+  width:170px; height:145px;
+  object-fit:cover; border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  animation:floaty 9s ease-in-out infinite 2s;
+}
+.hc-badge {
+  position:absolute; bottom:155px; right:10px;
+  background:#fff; border-radius:var(--radius-sm);
+  padding:.9rem 1.3rem; box-shadow:var(--shadow);
+  font-family:var(--font-ui); font-size:.72rem;
+  animation:floaty 6s ease-in-out infinite 1s;
+  min-width:150px;
+}
+.hc-badge .bval { font-family:var(--font-display); font-size:1.9rem; font-weight:900; color:var(--coral); line-height:1; }
+
+.hc-dot {
+  position:absolute; width:60px; height:60px; border-radius:50%;
+  display:grid; place-items:center; font-size:1.4rem;
+  box-shadow:var(--shadow-sm);
+}
+
+@keyframes floaty { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-14px);} }
+@keyframes slideIn { from{opacity:0;transform:translateY(30px);} to{opacity:1;transform:translateY(0);} }
+@keyframes spin { to{transform:rotate(360deg);} }
+
+/* ─── MARQUEE ─── */
+.marquee-wrap {
+  background: var(--grad-sunset);
+  padding: .75rem 0; overflow:hidden;
+}
+.marquee-track {
+  display:flex; gap:0; white-space:nowrap;
+  animation:marquee 22s linear infinite;
+}
+.marquee-item {
+  font-family:var(--font-ui); font-weight:700; font-size:.78rem;
+  letter-spacing:.1em; text-transform:uppercase; color:#fff;
+  padding:0 2rem; display:flex; align-items:center; gap:1rem;
+}
+.m-star { opacity:.6; font-size:1rem; }
+@keyframes marquee { from{transform:translateX(0);} to{transform:translateX(-50%);} }
+
+/* ─── SECTION COMMONS ─── */
+.sec { padding:7rem 0; }
+.sec-label {
+  font-family:var(--font-ui); font-size:.7rem; font-weight:700;
+  letter-spacing:.14em; text-transform:uppercase; color:var(--coral);
+  display:inline-flex; align-items:center; gap:.6rem; margin-bottom:.8rem;
+}
+.sec-label::before { content:''; width:28px; height:2px; background:var(--coral); border-radius:2px; }
+.sec-title {
+  font-family:var(--font-display);
+  font-size:clamp(2.4rem,4.5vw,3.8rem); font-weight:900;
+  letter-spacing:-.03em; line-height:1.05; color:var(--text);
+}
+.sec-sub { color:var(--text2); line-height:1.75; font-size:.95rem; max-width:440px; }
+
+/* ─── PALETTE CARDS ─── */
+.p-card {
+  background:#fff; border-radius:var(--radius);
+  box-shadow:var(--shadow-sm);
+  overflow:hidden; transition:transform var(--transition), box-shadow var(--transition);
+  height:100%;
+}
+.p-card:hover { transform:translateY(-10px) rotate(.4deg); box-shadow:var(--shadow-lg); }
+.p-swatches { height:140px; display:flex; }
+.p-swatch { flex:1; transition:flex .45s ease; cursor:pointer; }
+.p-card:hover .p-swatch:hover { flex:2.8; }
+.p-body { padding:1.4rem 1.6rem 1.8rem; }
+.p-mood-tag {
+  display:inline-block; font-family:var(--font-ui); font-size:.62rem; font-weight:700;
+  letter-spacing:.1em; text-transform:uppercase; padding:.22rem .75rem; border-radius:100px;
+  margin-bottom:.6rem;
+}
+.p-name { font-family:var(--font-display); font-size:1.25rem; font-weight:700; margin-bottom:.35rem; color:var(--text); }
+.p-desc { font-size:.82rem; color:var(--text2); line-height:1.6; margin-bottom:.9rem; }
+.p-hexes { display:flex; flex-wrap:wrap; gap:.35rem; }
+.p-hex {
+  font-family:'Space Mono',monospace; font-size:.6rem;
+  padding:.18rem .55rem; border-radius:5px;
+  background:var(--cream); color:var(--text3);
+  border:1px solid var(--sand); cursor:pointer; transition:all .25s;
+}
+.p-hex:hover { background:var(--coral); color:#fff; border-color:var(--coral); }
+
+/* swatch colors */
+.o1{background:#0a2342;} .o2{background:#1b4f72;} .o3{background:#2e86ab;} .o4{background:#7eccd4;} .o5{background:#d6eef2;}
+.d1{background:#1a0a00;} .d2{background:#8b3a00;} .d3{background:#e87722;} .d4{background:#f5b76e;} .d5{background:#fff3e0;}
+.f1{background:#0d1f12;} .f2{background:#1e4d2b;} .f3{background:#2d7a45;} .f4{background:#7dbf8e;} .f5{background:#e8f5e9;}
+.n1{background:#050510;} .n2{background:#1a0033;} .n3{background:#7b00ff;} .n4{background:#c8ff00;} .n5{background:#ff00aa;}
+.l1{background:#1a1025;} .l2{background:#3d2060;} .l3{background:#8860c0;} .l4{background:#c4a0e8;} .l5{background:#f5edff;}
+.v1{background:#0f0000;} .v2{background:#4a0000;} .v3{background:#cc1100;} .v4{background:#ff6600;} .v5{background:#fff8e1;}
+.c1{background:#e64a19;} .c2{background:#ff7043;} .c3{background:#ff8a65;} .c4{background:#ffccbc;} .c5{background:#fff3e0;}
+.m1{background:#0d47a1;} .m2{background:#1976d2;} .m3{background:#42a5f5;} .m4{background:#90caf9;} .m5{background:#e3f2fd;}
+.t1{background:#004d40;} .t2{background:#00796b;} .t3{background:#26a69a;} .t4{background:#80cbc4;} .t5{background:#e0f2f1;}
+.r1{background:#880e4f;} .r2{background:#c2185b;} .r3{background:#ec407a;} .r4{background:#f48fb1;} .r5{background:#fce4ec;}
+
+/* mood tag colors */
+.tag-blue   { background:rgba(41,182,246,.12); color:#0277bd; }
+.tag-orange { background:rgba(255,159,28,.15); color:#e65100; }
+.tag-green  { background:rgba(139,195,74,.15); color:#33691e; }
+.tag-purple { background:rgba(124,77,255,.12); color:#6200ea; }
+.tag-violet { background:rgba(103,58,183,.12); color:#4527a0; }
+.tag-red    { background:rgba(229,57,53,.12);  color:#b71c1c; }
+.tag-coral  { background:rgba(255,107,71,.12); color:#bf360c; }
+.tag-sky    { background:rgba(66,165,245,.12); color:#01579b; }
+.tag-teal   { background:rgba(38,166,154,.12); color:#004d40; }
+.tag-rose   { background:rgba(236,64,122,.12); color:#880e4f; }
+
+/* ─── STYLE CARDS ─── */
+.style-card {
+  border-radius:var(--radius-lg); overflow:hidden;
+  position:relative; aspect-ratio:3/4; cursor:pointer;
+  box-shadow:var(--shadow);
+}
+.style-card img { width:100%; height:100%; object-fit:cover; transition:transform .7s ease; display:block; }
+.style-card:hover img { transform:scale(1.07); }
+.style-overlay {
+  position:absolute; inset:0;
+  background:linear-gradient(to top, rgba(26,18,8,.85) 0%, rgba(26,18,8,.25) 55%, transparent 100%);
+  display:flex; flex-direction:column; justify-content:flex-end; padding:2rem;
+  transition:background .4s;
+}
+.style-card:hover .style-overlay { background:linear-gradient(to top, rgba(26,18,8,.92) 0%, rgba(26,18,8,.5) 65%, transparent 100%); }
+.style-icon {
+  width:48px; height:48px; border-radius:12px;
+  background:rgba(255,255,255,.18); backdrop-filter:blur(8px);
+  border:1px solid rgba(255,255,255,.3);
+  display:grid; place-items:center; margin-bottom:1rem;
+  font-size:1.3rem; color:#fff;
+  transition:transform .3s, background .3s;
+}
+.style-card:hover .style-icon { background:rgba(255,107,71,.45); transform:translateY(-4px); }
+.style-name { font-family:var(--font-display); font-size:1.7rem; font-weight:700; color:#fff; margin-bottom:.4rem; }
+.style-tag { display:inline-block; font-family:var(--font-ui); font-size:.62rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; padding:.22rem .7rem; border-radius:100px; border:1px solid rgba(255,255,255,.3); color:rgba(255,255,255,.7); margin-bottom:.6rem; }
+.style-desc { font-size:.82rem; color:rgba(255,255,255,.65); line-height:1.55; max-height:0; overflow:hidden; transition:max-height .45s ease; }
+.style-card:hover .style-desc { max-height:100px; }
+
+/* ─── COLOURED BANDS ─── */
+.band-sunset  { background: linear-gradient(135deg,#ff6b47,#ff9f1c,#ffe135); }
+.band-ocean   { background: linear-gradient(135deg,#29b6f6,#00bfa5); }
+.band-berry   { background: linear-gradient(135deg,#f06292,#7c4dff); }
+.band-meadow  { background: linear-gradient(135deg,#8bc34a,#00bfa5); }
+
+/* ─── TYPOGRAPHY CARDS ─── */
+.typo-card {
+  background:#fff; border-radius:var(--radius);
+  padding:2.4rem; box-shadow:var(--shadow-sm);
+  position:relative; overflow:hidden; height:100%;
+  transition:transform var(--transition), box-shadow var(--transition);
+  border:1px solid rgba(26,18,8,.06);
+}
+.typo-card::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:3px;
+  background:var(--grad-sunset); transform:scaleX(0); transform-origin:left;
+  transition:transform .4s ease;
+}
+.typo-card:hover::before { transform:scaleX(1); }
+.typo-card:hover { transform:translateY(-6px); box-shadow:var(--shadow); }
+.typo-label {
+  position:absolute; top:1.4rem; right:1.4rem;
+  font-family:var(--font-ui); font-size:.6rem; font-weight:700;
+  letter-spacing:.1em; text-transform:uppercase; color:var(--text3);
+}
+.typo-tags { display:flex; gap:.4rem; flex-wrap:wrap; margin-top:1.4rem; }
+.t-tag {
+  font-family:var(--font-ui); font-size:.65rem; font-weight:600;
+  padding:.22rem .7rem; border-radius:100px;
+  background:var(--cream); border:1px solid var(--sand); color:var(--text2);
+  transition:all .25s;
+}
+.t-tag:hover { background:var(--coral); color:#fff; border-color:var(--coral); }
+
+/* ─── FEATURE CARDS ─── */
+.feat-card {
+  background:#fff; border-radius:var(--radius);
+  padding:2rem; box-shadow:var(--shadow-sm);
+  height:100%; transition:transform var(--transition), box-shadow var(--transition);
+  border:1px solid rgba(26,18,8,.05);
+  position:relative; overflow:hidden;
+}
+.feat-card:hover { transform:translateY(-8px); box-shadow:var(--shadow); }
+.feat-icon {
+  width:56px; height:56px; border-radius:14px;
+  display:grid; place-items:center; margin-bottom:1.4rem; font-size:1.5rem;
+}
+.feat-title { font-family:var(--font-display); font-size:1.15rem; font-weight:700; margin-bottom:.45rem; color:var(--text); }
+.feat-desc { font-size:.84rem; color:var(--text2); line-height:1.65; }
+
+/* ─── COLOUR WHEEL SECTION ─── */
+.wheel-sec { background:var(--warm); }
+.color-circle {
+  width:320px; height:320px; border-radius:50%;
+  background:conic-gradient(
+    #ff6b47 0deg 36deg,
+    #ff9f1c 36deg 72deg,
+    #ffe135 72deg 108deg,
+    #8bc34a 108deg 144deg,
+    #00bfa5 144deg 180deg,
+    #29b6f6 180deg 216deg,
+    #7c4dff 216deg 252deg,
+    #f06292 252deg 288deg,
+    #e53935 288deg 324deg,
+    #ff6b47 324deg 360deg
+  );
+  margin:0 auto;
+  box-shadow:0 24px 80px rgba(255,107,71,.3);
+  animation:spinSlow 20s linear infinite;
+}
+@keyframes spinSlow { to{transform:rotate(360deg);} }
+.color-circle-inner {
+  width:320px; height:320px; position:relative; margin:0 auto;
+}
+.color-circle-center {
+  position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+  width:120px; height:120px; border-radius:50%;
+  background:var(--warm); display:grid; place-items:center;
+  font-family:var(--font-display); font-size:2.2rem; font-weight:900; color:var(--text);
+  box-shadow:inset 0 0 20px rgba(26,18,8,.06);
+}
+
+/* ─── GALLERY ─── */
+.gallery-sec { background:var(--cream); }
+.gallery-masonry {
+  display:grid;
+  grid-template-columns: 1.4fr 1fr 1fr;
+  grid-template-rows: 240px 240px;
+  gap:1rem;
+}
+.g-item { border-radius:var(--radius); overflow:hidden; position:relative; cursor:pointer; }
+.g-item img { width:100%; height:100%; object-fit:cover; transition:transform .6s ease; display:block; }
+.g-item:hover img { transform:scale(1.07); }
+.g-item:nth-child(1) { grid-row:span 2; }
+.g-item:nth-child(5) { grid-column:2 / span 2; }
+.g-lens {
+  position:absolute; inset:0; background:rgba(255,107,71,.35);
+  display:grid; place-items:center; opacity:0; transition:opacity .4s;
+  font-size:2rem; color:#fff;
+}
+.g-item:hover .g-lens { opacity:1; }
+
+/* ─── STATS ─── */
+.stats-sec { background:var(--grad-sunset); padding:4rem 0; }
+.st-val { font-family:var(--font-display); font-size:3.8rem; font-weight:900; color:#fff; line-height:1; }
+.st-label { font-family:var(--font-ui); font-size:.72rem; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:rgba(255,255,255,.7); margin-top:.4rem; }
+
+/* ─── TOOLS GRID ─── */
+.tool-card {
+  background:#fff; border-radius:var(--radius); padding:2rem;
+  text-align:center; box-shadow:var(--shadow-sm);
+  height:100%; transition:transform var(--transition), box-shadow var(--transition);
+  border:1px solid rgba(26,18,8,.05);
+}
+.tool-card:hover { transform:translateY(-6px); box-shadow:var(--shadow); }
+.tool-icon { font-size:2.2rem; display:block; margin-bottom:1rem; }
+.tool-name { font-family:var(--font-display); font-size:1.1rem; font-weight:700; margin-bottom:.4rem; color:var(--text); }
+.tool-desc { font-size:.82rem; color:var(--text2); line-height:1.6; }
+
+/* ─── TESTIMONIALS ─── */
+.test-card {
+  background:#fff; border-radius:var(--radius);
+  padding:2rem; box-shadow:var(--shadow-sm);
+  height:100%; transition:transform var(--transition), box-shadow var(--transition);
+  border:1px solid rgba(26,18,8,.05);
+}
+.test-card:hover { transform:translateY(-6px); box-shadow:var(--shadow); }
+.test-quote { font-family:var(--font-display); font-size:3.5rem; line-height:.5; color:var(--coral); opacity:.35; margin-bottom:.8rem; }
+.test-stars { color:var(--tangerine); font-size:.9rem; margin-bottom:1rem; }
+.test-text { font-size:.88rem; line-height:1.75; color:var(--text2); margin-bottom:1.5rem; font-style:italic; }
+.test-avatar { width:44px; height:44px; border-radius:50%; object-fit:cover; border:2px solid var(--sand); }
+.test-name { font-family:var(--font-ui); font-weight:700; font-size:.85rem; color:var(--text); }
+.test-role { font-size:.73rem; color:var(--text3); }
+
+/* ─── FAQ ─── */
+.faq-sec { background:var(--warm); }
+.faq-item {
+  background:#fff; border-radius:var(--radius-sm);
+  margin-bottom:.75rem; overflow:hidden;
+  box-shadow:var(--shadow-sm); border:1px solid rgba(26,18,8,.05);
+}
+.faq-q {
+  width:100%; text-align:left; background:none; border:none;
+  padding:1.3rem 1.6rem; font-family:var(--font-ui); font-weight:700; font-size:.92rem;
+  color:var(--text); cursor:pointer; display:flex; justify-content:space-between; align-items:center; gap:1rem;
+  transition:color .3s;
+}
+.faq-q:hover { color:var(--coral); }
+.faq-q i { transition:transform .35s; font-size:1.1rem; color:var(--coral); flex-shrink:0; }
+.faq-q.open i { transform:rotate(45deg); }
+.faq-a {
+  font-size:.86rem; color:var(--text2); line-height:1.7;
+  padding:0 1.6rem; max-height:0; overflow:hidden;
+  transition:max-height .4s ease, padding .4s;
+}
+.faq-a.open { max-height:200px; padding:0 1.6rem 1.4rem; }
+
+/* ─── NEWSLETTER ─── */
+.nl-sec {
+  background: linear-gradient(135deg,#fff8f0 0%,#ffeedd 100%);
+  border-top:1px solid var(--sand); border-bottom:1px solid var(--sand);
+}
+.nl-input {
+  padding:.85rem 1.4rem; border-radius:100px; border:2px solid var(--sand);
+  font-family:var(--font-body); font-size:.9rem; flex:1; min-width:0;
+  background:#fff; color:var(--text); outline:none; transition:border-color .3s;
+}
+.nl-input:focus { border-color:var(--coral); }
+.nl-input::placeholder { color:var(--text3); }
+
+/* ─── CTA ─── */
+.cta-sec {
+  background:var(--cream);
+  position:relative; overflow:hidden;
+}
+.cta-bg-blob {
+  position:absolute; border-radius:50%;
+  pointer-events:none; filter:blur(80px);
+}
+.blob1 { width:500px;height:500px; background:rgba(255,107,71,.12); top:-100px; right:-100px; }
+.blob2 { width:400px;height:400px; background:rgba(139,195,74,.1); bottom:-100px; left:-80px; }
+.blob3 { width:300px;height:300px; background:rgba(240,98,146,.1); top:50%; left:40%; }
+.cta-title {
+  font-family:var(--font-display);
+  font-size:clamp(3rem,6.5vw,5.5rem); font-weight:900;
+  letter-spacing:-.04em; line-height:.95; color:var(--text);
+}
+.cta-title .highlight {
+  background:var(--grad-sunset);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+}
+
+/* ─── FOOTER ─── */
+footer { background:var(--text); color:rgba(255,255,255,.55); padding:4.5rem 0 2rem; }
+.footer-brand { font-family:var(--font-ui); font-size:1.6rem; font-weight:800; color:#fff; letter-spacing:-.03em; }
+.footer-brand .dot { color:var(--coral); }
+.footer-desc { font-size:.84rem; line-height:1.7; margin-top:.8rem; max-width:280px; }
+.footer-head { font-family:var(--font-ui); font-size:.7rem; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:#fff; margin-bottom:1.1rem; }
+.footer-links { list-style:none; padding:0; }
+.footer-links li { margin-bottom:.55rem; }
+.footer-links a { font-size:.83rem; color:rgba(255,255,255,.5); text-decoration:none; transition:color .3s; }
+.footer-links a:hover { color:var(--coral); }
+.footer-soc {
+  width:36px;height:36px; border-radius:9px;
+  background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.12);
+  display:grid; place-items:center; color:rgba(255,255,255,.5);
+  text-decoration:none; transition:all .3s; font-size:.95rem;
+}
+.footer-soc:hover { background:var(--coral); border-color:var(--coral); color:#fff; }
+.footer-bottom { border-top:1px solid rgba(255,255,255,.08); margin-top:3rem; padding-top:1.4rem; font-size:.75rem; }
+
+/* ─── BACK TO TOP ─── */
+#btt {
+  position:fixed; bottom:2rem; right:2rem;
+  width:48px;height:48px; border-radius:14px;
+  background:var(--grad-sunset); color:#fff;
+  display:grid; place-items:center; font-size:1.2rem;
+  box-shadow:0 8px 24px rgba(255,107,71,.4);
+  cursor:pointer; z-index:500; opacity:0; transform:translateY(20px);
+  transition:all .4s; text-decoration:none; border:none;
+}
+#btt.show { opacity:1; transform:translateY(0); }
+#btt:hover { transform:translateY(-4px); box-shadow:0 14px 36px rgba(255,107,71,.55); }
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:991px){
+  .hero-collage { display:none; }
+  .gallery-masonry { grid-template-columns:1fr 1fr; grid-template-rows:auto; }
+  .g-item:nth-child(1) { grid-row:auto; }
+  .g-item:nth-child(5) { grid-column:auto; }
+  .color-circle,.color-circle-inner { width:240px;height:240px; }
+  .color-circle-center { width:90px;height:90px; font-size:1.6rem; }
+}
+@media(max-width:576px){
+  body { cursor:auto; }
+  #cur,#cur-ring { display:none; }
+  .hero h1 { font-size:3rem; }
+  .gallery-masonry { grid-template-columns:1fr; }
+}
+</style>
+</head>
+<body>
+
+<div id="prog"></div>
+<div id="cur"></div>
+<div id="cur-ring"></div>
+
+<!-- ══ NAVBAR ══ -->
+<nav class="navbar navbar-expand-lg sticky-top" id="nav">
+  <div class="container">
+    <a class="navbar-brand" href="#">Prism<span class="dot">.</span></a>
+    <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#nb">
+      <i class="bi bi-list fs-3" style="color:var(--text)"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="nb">
+      <ul class="navbar-nav mx-auto gap-1">
+        <li><a class="nav-link" href="#palettes">Palettes</a></li>
+        <li><a class="nav-link" href="#styles">Styles</a></li>
+        <li><a class="nav-link" href="#gallery">Gallery</a></li>
+        <li><a class="nav-link" href="#typography">Typography</a></li>
+        <li><a class="nav-link" href="#tools">Tools</a></li>
+        <li><a class="nav-link" href="#faq">FAQ</a></li>
+      </ul>
+      <a href="#cta" class="btn nav-pill ms-2">Start Free</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ══ HERO ══ -->
+<section class="hero" id="home">
+  <div class="container">
+    <div class="row align-items-center gy-5">
+      <div class="col-lg-6">
+        <div class="hero-chip mb-3"><i class="bi bi-stars"></i> New — 120+ Palettes</div>
+        <h1 class="mb-4">
+          Color is<br>
+          <span class="italic-line">your <span class="paint-stroke">superpower</span></span>
+        </h1>
+        <p class="hero-body mb-4">Curated color themes, style guides and font pairings for designers who want their work remembered. Always free, always beautiful.</p>
+        <div class="hero-kpi mb-5">
+          <div><div class="kpi-n" data-count="120">0</div><div class="kpi-l">Palettes</div></div>
+          <div><div class="kpi-n" data-count="48">0</div><div class="kpi-l">Font Pairs</div></div>
+          <div><div class="kpi-n" data-count="5000">0</div><div class="kpi-l">Designers</div></div>
+        </div>
+        <div class="d-flex gap-3 flex-wrap">
+          <a href="#palettes" class="btn-fire">Explore Palettes <i class="bi bi-arrow-right"></i></a>
+          <a href="#gallery" class="btn-outline-warm">View Gallery <i class="bi bi-images"></i></a>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="hero-collage">
+          <img src="https://images.pexels.com/photos/1762851/pexels-photo-1762851.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Color palette" class="hc-main"/>
+          <img src="https://images.pexels.com/photos/3094218/pexels-photo-3094218.jpeg?auto=compress&cs=tinysrgb&w=400" alt="Design" class="hc-sm1"/>
+          <img src="https://images.pexels.com/photos/1109543/pexels-photo-1109543.jpeg?auto=compress&cs=tinysrgb&w=400" alt="Colors" class="hc-sm2"/>
+          <div class="hc-badge">
+            <div class="bval">∞</div>
+            <div style="font-size:.7rem;color:var(--text3);margin-top:2px;font-family:var(--font-ui);font-weight:600;">Combinations</div>
+          </div>
+          <!-- floating dots -->
+          <div class="hc-dot band-sunset" style="top:-10px;left:40px;">🎨</div>
+          <div class="hc-dot band-ocean" style="bottom:80px;right:-10px;font-size:1rem;" data-aos="zoom-in" data-aos-delay="400"><i class="bi bi-palette2" style="color:#fff;"></i></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ MARQUEE ══ -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <span class="marquee-item"><span class="m-star">✦</span> Ocean Breeze</span>
+    <span class="marquee-item"><span class="m-star">✦</span> Desert Sunset</span>
+    <span class="marquee-item"><span class="m-star">✦</span> Forest Mystic</span>
+    <span class="marquee-item"><span class="m-star">✦</span> Urban Neon</span>
+    <span class="marquee-item"><span class="m-star">✦</span> Lavender Dreams</span>
+    <span class="marquee-item"><span class="m-star">✦</span> Volcanic Fire</span>
+    <span class="marquee-item"><span class="m-star">✦</span> Coral Reef</span>
+    <span class="marquee-item"><span class="m-star">✦</span> Midnight Blue</span>
+    <span class="marquee-item"><span class="m-star">✦</span> Tropical Garden</span>
+    <span class="marquee-item"><span class="m-star">✦</span> Sakura Bloom</span>
+    <span class="marquee-item"><span class="m-star">✦</span> Ocean Breeze</span>
+    <span class="marquee-item"><span class="m-star">✦</span> Desert Sunset</span>
+    <span class="marquee-item"><span class="m-star">✦</span> Forest Mystic</span>
+    <span class="marquee-item"><span class="m-star">✦</span> Urban Neon</span>
+    <span class="marquee-item"><span class="m-star">✦</span> Lavender Dreams</span>
+    <span class="marquee-item"><span class="m-star">✦</span> Volcanic Fire</span>
+    <span class="marquee-item"><span class="m-star">✦</span> Coral Reef</span>
+    <span class="marquee-item"><span class="m-star">✦</span> Midnight Blue</span>
+    <span class="marquee-item"><span class="m-star">✦</span> Tropical Garden</span>
+    <span class="marquee-item"><span class="m-star">✦</span> Sakura Bloom</span>
+  </div>
+</div>
+
+<!-- ══ PALETTES ══ -->
+<section class="sec" id="palettes">
+  <div class="container">
+    <div class="row align-items-end mb-5">
+      <div class="col-lg-6" data-aos="fade-right">
+        <div class="sec-label">Color Palettes</div>
+        <h2 class="sec-title">Ten Worlds,<br>Ten Moods</h2>
+      </div>
+      <div class="col-lg-5 offset-lg-1 d-flex align-items-end" data-aos="fade-left">
+        <p class="sec-sub">Every palette tells a story. Pick the one that speaks to your brand, project, or mood.</p>
+      </div>
+    </div>
+    <div class="row g-4">
+
+      <div class="col-sm-6 col-xl-4" data-aos="fade-up" data-aos-delay="0">
+        <div class="p-card">
+          <div class="p-swatches"><div class="p-swatch o1"></div><div class="p-swatch o2"></div><div class="p-swatch o3"></div><div class="p-swatch o4"></div><div class="p-swatch o5"></div></div>
+          <div class="p-body">
+            <span class="p-mood-tag tag-blue">Serene</span>
+            <div class="p-name">Ocean Breeze</div>
+            <div class="p-desc">Calm, deep, and trustworthy. For wellness, fintech and professional services.</div>
+            <div class="p-hexes"><span class="p-hex">#0a2342</span><span class="p-hex">#2e86ab</span><span class="p-hex">#7eccd4</span><span class="p-hex">#d6eef2</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-6 col-xl-4" data-aos="fade-up" data-aos-delay="70">
+        <div class="p-card">
+          <div class="p-swatches"><div class="p-swatch d1"></div><div class="p-swatch d2"></div><div class="p-swatch d3"></div><div class="p-swatch d4"></div><div class="p-swatch d5"></div></div>
+          <div class="p-body">
+            <span class="p-mood-tag tag-orange">Warm</span>
+            <div class="p-name">Desert Sunset</div>
+            <div class="p-desc">Adventurous and soulful. Ideal for travel, food, and lifestyle brands.</div>
+            <div class="p-hexes"><span class="p-hex">#8b3a00</span><span class="p-hex">#e87722</span><span class="p-hex">#f5b76e</span><span class="p-hex">#fff3e0</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-6 col-xl-4" data-aos="fade-up" data-aos-delay="140">
+        <div class="p-card">
+          <div class="p-swatches"><div class="p-swatch f1"></div><div class="p-swatch f2"></div><div class="p-swatch f3"></div><div class="p-swatch f4"></div><div class="p-swatch f5"></div></div>
+          <div class="p-body">
+            <span class="p-mood-tag tag-green">Organic</span>
+            <div class="p-name">Forest Mystic</div>
+            <div class="p-desc">Serene, alive, and grounded. For sustainability, health, and outdoor brands.</div>
+            <div class="p-hexes"><span class="p-hex">#1e4d2b</span><span class="p-hex">#2d7a45</span><span class="p-hex">#7dbf8e</span><span class="p-hex">#e8f5e9</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-6 col-xl-4" data-aos="fade-up" data-aos-delay="0">
+        <div class="p-card">
+          <div class="p-swatches"><div class="p-swatch n1"></div><div class="p-swatch n2"></div><div class="p-swatch n3"></div><div class="p-swatch n4"></div><div class="p-swatch n5"></div></div>
+          <div class="p-body">
+            <span class="p-mood-tag tag-purple">Electric</span>
+            <div class="p-name">Urban Neon</div>
+            <div class="p-desc">Bold and unapologetic. Built for tech startups, gaming, and nightlife.</div>
+            <div class="p-hexes"><span class="p-hex">#7b00ff</span><span class="p-hex">#c8ff00</span><span class="p-hex">#ff00aa</span><span class="p-hex">#050510</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-6 col-xl-4" data-aos="fade-up" data-aos-delay="70">
+        <div class="p-card">
+          <div class="p-swatches"><div class="p-swatch l1"></div><div class="p-swatch l2"></div><div class="p-swatch l3"></div><div class="p-swatch l4"></div><div class="p-swatch l5"></div></div>
+          <div class="p-body">
+            <span class="p-mood-tag tag-violet">Dreamy</span>
+            <div class="p-name">Lavender Dreams</div>
+            <div class="p-desc">Soft, spiritual, and imaginative. Perfect for beauty, meditation, creative studios.</div>
+            <div class="p-hexes"><span class="p-hex">#3d2060</span><span class="p-hex">#8860c0</span><span class="p-hex">#c4a0e8</span><span class="p-hex">#f5edff</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-6 col-xl-4" data-aos="fade-up" data-aos-delay="140">
+        <div class="p-card">
+          <div class="p-swatches"><div class="p-swatch v1"></div><div class="p-swatch v2"></div><div class="p-swatch v3"></div><div class="p-swatch v4"></div><div class="p-swatch v5"></div></div>
+          <div class="p-body">
+            <span class="p-mood-tag tag-red">Intense</span>
+            <div class="p-name">Volcanic Fire</div>
+            <div class="p-desc">Dramatic and powerful. Designed for sports, energy, and performance brands.</div>
+            <div class="p-hexes"><span class="p-hex">#4a0000</span><span class="p-hex">#cc1100</span><span class="p-hex">#ff6600</span><span class="p-hex">#fff8e1</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-6 col-xl-4" data-aos="fade-up" data-aos-delay="0">
+        <div class="p-card">
+          <div class="p-swatches"><div class="p-swatch c1"></div><div class="p-swatch c2"></div><div class="p-swatch c3"></div><div class="p-swatch c4"></div><div class="p-swatch c5"></div></div>
+          <div class="p-body">
+            <span class="p-mood-tag tag-coral">Playful</span>
+            <div class="p-name">Coral Reef</div>
+            <div class="p-desc">Vibrant, joyful, and lively. Perfect for apps, food delivery, and youth brands.</div>
+            <div class="p-hexes"><span class="p-hex">#e64a19</span><span class="p-hex">#ff7043</span><span class="p-hex">#ff8a65</span><span class="p-hex">#ffccbc</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-6 col-xl-4" data-aos="fade-up" data-aos-delay="70">
+        <div class="p-card">
+          <div class="p-swatches"><div class="p-swatch m1"></div><div class="p-swatch m2"></div><div class="p-swatch m3"></div><div class="p-swatch m4"></div><div class="p-swatch m5"></div></div>
+          <div class="p-body">
+            <span class="p-mood-tag tag-sky">Corporate</span>
+            <div class="p-name">Midnight Blue</div>
+            <div class="p-desc">Reliable, polished and modern. Trusted by SaaS, finance, and enterprise brands.</div>
+            <div class="p-hexes"><span class="p-hex">#0d47a1</span><span class="p-hex">#1976d2</span><span class="p-hex">#42a5f5</span><span class="p-hex">#e3f2fd</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-6 col-xl-4" data-aos="fade-up" data-aos-delay="140">
+        <div class="p-card">
+          <div class="p-swatches"><div class="p-swatch t1"></div><div class="p-swatch t2"></div><div class="p-swatch t3"></div><div class="p-swatch t4"></div><div class="p-swatch t5"></div></div>
+          <div class="p-body">
+            <span class="p-mood-tag tag-teal">Fresh</span>
+            <div class="p-name">Tropical Garden</div>
+            <div class="p-desc">Cool, refreshing and natural. Great for eco products, spas, and wellness brands.</div>
+            <div class="p-hexes"><span class="p-hex">#004d40</span><span class="p-hex">#00796b</span><span class="p-hex">#26a69a</span><span class="p-hex">#e0f2f1</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-6 col-xl-4" data-aos="fade-up" data-aos-delay="0">
+        <div class="p-card">
+          <div class="p-swatches"><div class="p-swatch r1"></div><div class="p-swatch r2"></div><div class="p-swatch r3"></div><div class="p-swatch r4"></div><div class="p-swatch r5"></div></div>
+          <div class="p-body">
+            <span class="p-mood-tag tag-rose">Romantic</span>
+            <div class="p-name">Sakura Bloom</div>
+            <div class="p-desc">Feminine, delicate, and beautiful. Ideal for beauty, fashion, and lifestyle brands.</div>
+            <div class="p-hexes"><span class="p-hex">#880e4f</span><span class="p-hex">#ec407a</span><span class="p-hex">#f48fb1</span><span class="p-hex">#fce4ec</span></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══ STATS ══ -->
+<div class="stats-sec">
+  <div class="container">
+    <div class="row text-center g-0">
+      <div class="col-6 col-md-3 py-4" data-aos="zoom-in" data-aos-delay="0"><div class="st-val" data-count="120">0</div><div class="st-label">Palettes</div></div>
+      <div class="col-6 col-md-3 py-4" data-aos="zoom-in" data-aos-delay="80"><div class="st-val" data-count="48">0</div><div class="st-label">Font Pairings</div></div>
+      <div class="col-6 col-md-3 py-4" data-aos="zoom-in" data-aos-delay="160"><div class="st-val" data-count="5000">0</div><div class="st-label">Designers</div></div>
+      <div class="col-6 col-md-3 py-4" data-aos="zoom-in" data-aos-delay="240"><div class="st-val" data-count="100">0</div><div class="st-label">% Free</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ STYLE SHOWCASE ══ -->
+<section class="sec" id="styles" style="background:var(--warm);">
+  <div class="container">
+    <div class="row mb-5">
+      <div class="col-lg-6" data-aos="fade-right">
+        <div class="sec-label">Style Directions</div>
+        <h2 class="sec-title">Five Aesthetics,<br>Infinite Worlds</h2>
+      </div>
+      <div class="col-lg-5 offset-lg-1 d-flex align-items-end" data-aos="fade-left">
+        <p class="sec-sub">Great design has a point of view. These directions give you a foundation to build something unforgettable.</p>
+      </div>
+    </div>
+    <div class="row g-4">
+      <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="0">
+        <div class="style-card" style="aspect-ratio:3/4">
+          <img src="https://images.pexels.com/photos/6444/pencil-typography-black-design.jpg?auto=compress&cs=tinysrgb&w=600" alt="Minimalist"/>
+          <div class="style-overlay">
+            <span class="style-tag">Minimalist</span>
+            <div class="style-icon"><i class="bi bi-square"></i></div>
+            <div class="style-name">Minimalist</div>
+            <div class="style-desc">Clean lines, generous whitespace. The courage to leave things out — less is never less.</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="100">
+        <div class="style-card">
+          <img src="https://images.pexels.com/photos/1671325/pexels-photo-1671325.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Bold"/>
+          <div class="style-overlay">
+            <span class="style-tag">Bold & Vibrant</span>
+            <div class="style-icon"><i class="bi bi-lightning-fill"></i></div>
+            <div class="style-name">Bold & Vibrant</div>
+            <div class="style-desc">High energy, high contrast, high impact. Turn every scroll-stop into an experience.</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="200">
+        <div class="style-card">
+          <img src="https://images.pexels.com/photos/1166209/pexels-photo-1166209.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Earthy"/>
+          <div class="style-overlay">
+            <span class="style-tag">Earthy & Natural</span>
+            <div class="style-icon"><i class="bi bi-tree-fill"></i></div>
+            <div class="style-name">Earthy & Natural</div>
+            <div class="style-desc">Grounded textures and organic tones. Connect brands to something ancient and real.</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-6" data-aos="fade-up" data-aos-delay="0">
+        <div class="style-card" style="aspect-ratio:16/9">
+          <img src="https://images.pexels.com/photos/2693212/pexels-photo-2693212.png?auto=compress&cs=tinysrgb&w=800" alt="Editorial"/>
+          <div class="style-overlay">
+            <span class="style-tag">Editorial</span>
+            <div class="style-icon"><i class="bi bi-newspaper"></i></div>
+            <div class="style-name">Editorial</div>
+            <div class="style-desc">Typography-led. Serif headlines, dramatic contrast, and the confidence of print.</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-6" data-aos="fade-up" data-aos-delay="100">
+        <div class="style-card" style="aspect-ratio:16/9">
+          <img src="https://images.pexels.com/photos/1029604/pexels-photo-1029604.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Retro"/>
+          <div class="style-overlay">
+            <span class="style-tag">Retro Futurism</span>
+            <div class="style-icon"><i class="bi bi-cpu-fill"></i></div>
+            <div class="style-name">Retro Future</div>
+            <div class="style-desc">70s geometry meets sci-fi dreams. Warm neons, rounded forms, analog nostalgia.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ COLOUR WHEEL ══ -->
+<section class="sec wheel-sec">
+  <div class="container">
+    <div class="row align-items-center gy-5">
+      <div class="col-lg-5" data-aos="fade-right">
+        <div class="sec-label">Color Theory</div>
+        <h2 class="sec-title">The Full<br>Spectrum</h2>
+        <p class="sec-sub mt-3 mb-4">Every hue has a personality. Understand color relationships to design with purpose and intention.</p>
+        <div class="row g-3 mt-2">
+          <div class="col-6"><div class="p-3 rounded-3 text-center" style="background:rgba(255,107,71,.1)"><div style="font-family:var(--font-display);font-weight:900;color:var(--coral)">Warm</div><div style="font-size:.78rem;color:var(--text2)">Energy & Passion</div></div></div>
+          <div class="col-6"><div class="p-3 rounded-3 text-center" style="background:rgba(41,182,246,.1)"><div style="font-family:var(--font-display);font-weight:900;color:var(--sky)">Cool</div><div style="font-size:.78rem;color:var(--text2)">Calm & Trust</div></div></div>
+          <div class="col-6"><div class="p-3 rounded-3 text-center" style="background:rgba(139,195,74,.1)"><div style="font-family:var(--font-display);font-weight:900;color:var(--lime)">Natural</div><div style="font-size:.78rem;color:var(--text2)">Growth & Life</div></div></div>
+          <div class="col-6"><div class="p-3 rounded-3 text-center" style="background:rgba(240,98,146,.1)"><div style="font-family:var(--font-display);font-weight:900;color:var(--rose)">Vivid</div><div style="font-size:.78rem;color:var(--text2)">Joy & Romance</div></div></div>
+        </div>
+      </div>
+      <div class="col-lg-6 offset-lg-1 text-center" data-aos="zoom-in">
+        <div class="color-circle-inner">
+          <div class="color-circle"></div>
+          <div class="color-circle-center">360°</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ GALLERY ══ -->
+<section class="sec gallery-sec" id="gallery">
+  <div class="container">
+    <div class="row mb-5">
+      <div class="col-lg-6" data-aos="fade-right">
+        <div class="sec-label">Inspiration Gallery</div>
+        <h2 class="sec-title">Color in the<br>Wild</h2>
+      </div>
+      <div class="col-lg-5 offset-lg-1 d-flex align-items-end" data-aos="fade-left">
+        <p class="sec-sub">See how these palettes breathe life into real design contexts and photography.</p>
+      </div>
+    </div>
+    <div class="gallery-masonry" data-aos="fade-up">
+      <div class="g-item"><img src="https://images.pexels.com/photos/3094799/pexels-photo-3094799.jpeg?auto=compress&cs=tinysrgb&w=800" alt="g1"/><div class="g-lens"><i class="bi bi-zoom-in"></i></div></div>
+      <div class="g-item"><img src="https://images.pexels.com/photos/1616403/pexels-photo-1616403.jpeg?auto=compress&cs=tinysrgb&w=600" alt="g2"/><div class="g-lens"><i class="bi bi-zoom-in"></i></div></div>
+      <div class="g-item"><img src="https://images.pexels.com/photos/1109543/pexels-photo-1109543.jpeg?auto=compress&cs=tinysrgb&w=600" alt="g3"/><div class="g-lens"><i class="bi bi-zoom-in"></i></div></div>
+      <div class="g-item"><img src="https://images.pexels.com/photos/1762851/pexels-photo-1762851.jpeg?auto=compress&cs=tinysrgb&w=600" alt="g4"/><div class="g-lens"><i class="bi bi-zoom-in"></i></div></div>
+      <div class="g-item"><img src="https://images.pexels.com/photos/3094218/pexels-photo-3094218.jpeg?auto=compress&cs=tinysrgb&w=800" alt="g5"/><div class="g-lens"><i class="bi bi-zoom-in"></i></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ TYPOGRAPHY ══ -->
+<section class="sec" id="typography" style="background:var(--warm);">
+  <div class="container">
+    <div class="row mb-5">
+      <div class="col-lg-6" data-aos="fade-right">
+        <div class="sec-label">Typography</div>
+        <h2 class="sec-title">Fonts That<br>Feel Right</h2>
+      </div>
+      <div class="col-lg-5 offset-lg-1 d-flex align-items-end" data-aos="fade-left">
+        <p class="sec-sub">Handpicked typeface pairings that complement every mood and palette direction.</p>
+      </div>
+    </div>
+    <div class="row g-4">
+      <div class="col-md-6" data-aos="fade-up" data-aos-delay="0">
+        <div class="typo-card">
+          <span class="typo-label">Editorial Serif</span>
+          <div style="font-family:'Fraunces',serif;font-size:3.2rem;font-weight:900;letter-spacing:-.04em;line-height:.95;margin-bottom:.9rem;color:var(--text)">
+            The Art<br><em style="color:var(--coral);font-weight:300">of Stillness</em>
+          </div>
+          <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:300;color:var(--text2);font-size:.88rem;line-height:1.7">
+            Fraunces + Bricolage Grotesque — serif drama meets variable clarity. Luxury editorial at its finest.
+          </div>
+          <div class="typo-tags"><span class="t-tag">Display</span><span class="t-tag">Editorial</span><span class="t-tag">Luxury</span></div>
+        </div>
+      </div>
+      <div class="col-md-6" data-aos="fade-up" data-aos-delay="100">
+        <div class="typo-card">
+          <span class="typo-label">Modern Sans</span>
+          <div style="font-family:'Syne',sans-serif;font-size:3rem;font-weight:800;letter-spacing:-.05em;line-height:.9;margin-bottom:.9rem;color:var(--text)">
+            MOVE<br>FASTER
+          </div>
+          <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:300;color:var(--text2);font-size:.88rem;line-height:1.7">
+            Syne + Bricolage Grotesque — ultra-tight, geometric, and relentlessly contemporary. Built for speed.
+          </div>
+          <div class="typo-tags"><span class="t-tag">Sans-serif</span><span class="t-tag">Tech</span><span class="t-tag">Startup</span></div>
+        </div>
+      </div>
+      <div class="col-md-6" data-aos="fade-up" data-aos-delay="0">
+        <div class="typo-card">
+          <span class="typo-label">Contrast Pair</span>
+          <div style="font-family:'Fraunces',serif;font-style:italic;font-size:2rem;font-weight:300;color:var(--coral);line-height:1.2;margin-bottom:.8rem">
+            "Where bold<br>meets delicate"
+          </div>
+          <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;color:var(--text);margin-bottom:.7rem">
+            Italic serif meets uppercase sans — fluid vs rigid.
+          </div>
+          <div class="typo-tags"><span class="t-tag">Mixed</span><span class="t-tag">Contrast</span><span class="t-tag">Fashion</span></div>
+        </div>
+      </div>
+      <div class="col-md-6" data-aos="fade-up" data-aos-delay="100">
+        <div class="typo-card">
+          <span class="typo-label">Monospace</span>
+          <div style="font-family:'Space Mono',monospace;font-size:1.5rem;color:var(--coral);letter-spacing:.04em;line-height:1.5;margin-bottom:.9rem">
+            01_INIT<br>02_BUILD<br>03_DEPLOY
+          </div>
+          <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:300;color:var(--text2);font-size:.88rem;line-height:1.7">
+            Space Mono + Bricolage — code aesthetic with human warmth. Developer tools, dashboards, data products.
+          </div>
+          <div class="typo-tags"><span class="t-tag">Mono</span><span class="t-tag">Developer</span><span class="t-tag">Data</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FEATURES ══ -->
+<section class="sec" id="features">
+  <div class="container">
+    <div class="row mb-5 text-center">
+      <div class="col-lg-7 mx-auto" data-aos="fade-up">
+        <div class="sec-label justify-content-center">Features</div>
+        <h2 class="sec-title">Everything a<br>Designer Needs</h2>
+      </div>
+    </div>
+    <div class="row g-4">
+      <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="0">
+        <div class="feat-card">
+          <div class="feat-icon" style="background:rgba(255,107,71,.12)"><i class="bi bi-palette2" style="color:var(--coral);font-size:1.5rem"></i></div>
+          <div class="feat-title">Curated Palettes</div>
+          <div class="feat-desc">120+ hand-crafted palettes with precise hex codes. Copy and drop into any project instantly.</div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="80">
+        <div class="feat-card">
+          <div class="feat-icon" style="background:rgba(41,182,246,.12)"><i class="bi bi-fonts" style="color:var(--sky);font-size:1.5rem"></i></div>
+          <div class="feat-title">Font Pairings</div>
+          <div class="feat-desc">Expert typeface combinations for every brand personality — editorial, technical, or modern.</div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="160">
+        <div class="feat-card">
+          <div class="feat-icon" style="background:rgba(139,195,74,.12)"><i class="bi bi-grid-3x3-gap" style="color:var(--lime);font-size:1.5rem"></i></div>
+          <div class="feat-title">Style Guides</div>
+          <div class="feat-desc">Complete aesthetic directions — minimalist, bold, earthy, editorial — with usage guidelines.</div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="0">
+        <div class="feat-card">
+          <div class="feat-icon" style="background:rgba(124,77,255,.12)"><i class="bi bi-code-slash" style="color:var(--violet);font-size:1.5rem"></i></div>
+          <div class="feat-title">CSS Variables</div>
+          <div class="feat-desc">Every palette exported as CSS custom properties — drop into your stylesheet in seconds.</div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="80">
+        <div class="feat-card">
+          <div class="feat-icon" style="background:rgba(240,98,146,.12)"><i class="bi bi-phone" style="color:var(--rose);font-size:1.5rem"></i></div>
+          <div class="feat-title">Responsive Ready</div>
+          <div class="feat-desc">All palettes and styles tested across device sizes for consistent beauty everywhere.</div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="160">
+        <div class="feat-card">
+          <div class="feat-icon" style="background:rgba(255,159,28,.12)"><i class="bi bi-shield-check" style="color:var(--tangerine);font-size:1.5rem"></i></div>
+          <div class="feat-title">100% Free</div>
+          <div class="feat-desc">No attribution required. No copyright. Use in personal or commercial projects, forever.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ TOOLS ══ -->
+<section class="sec" id="tools" style="background:var(--warm);">
+  <div class="container">
+    <div class="row mb-5 text-center">
+      <div class="col-lg-7 mx-auto" data-aos="fade-up">
+        <div class="sec-label justify-content-center">Design Tools</div>
+        <h2 class="sec-title">Built-in Tools<br>for Every Step</h2>
+      </div>
+    </div>
+    <div class="row g-4">
+      <div class="col-6 col-md-3" data-aos="zoom-in" data-aos-delay="0">
+        <div class="tool-card">
+          <span class="tool-icon" style="color:var(--coral)"><i class="bi bi-eyedropper"></i></span>
+          <div class="tool-name">Color Picker</div>
+          <div class="tool-desc">Extract exact HEX, RGB and HSL values instantly.</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3" data-aos="zoom-in" data-aos-delay="80">
+        <div class="tool-card">
+          <span class="tool-icon" style="color:var(--teal)"><i class="bi bi-arrow-repeat"></i></span>
+          <div class="tool-name">Contrast Check</div>
+          <div class="tool-desc">Ensure WCAG AA and AAA accessibility compliance.</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3" data-aos="zoom-in" data-aos-delay="160">
+        <div class="tool-card">
+          <span class="tool-icon" style="color:var(--violet)"><i class="bi bi-layers"></i></span>
+          <div class="tool-name">Gradient Builder</div>
+          <div class="tool-desc">Craft smooth gradients from any palette in seconds.</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3" data-aos="zoom-in" data-aos-delay="240">
+        <div class="tool-card">
+          <span class="tool-icon" style="color:var(--lime)"><i class="bi bi-download"></i></span>
+          <div class="tool-name">Export</div>
+          <div class="tool-desc">CSS, SCSS, JSON, ASE, Figma tokens — your format.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ TESTIMONIALS ══ -->
+<section class="sec">
+  <div class="container">
+    <div class="row mb-5 text-center">
+      <div class="col-lg-6 mx-auto" data-aos="fade-up">
+        <div class="sec-label justify-content-center">Love Letters</div>
+        <h2 class="sec-title">What Designers<br>Are Saying</h2>
+      </div>
+    </div>
+    <div class="row g-4">
+      <div class="col-md-4" data-aos="fade-up" data-aos-delay="0">
+        <div class="test-card">
+          <div class="test-quote">"</div>
+          <div class="test-stars">★★★★★</div>
+          <div class="test-text">Prism completely changed how I approach color in projects. The palettes are thoughtful and instantly elevate any design.</div>
+          <div class="d-flex align-items-center gap-3">
+            <img src="https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=100" alt="Sarah" class="test-avatar"/>
+            <div><div class="test-name">Sarah Chen</div><div class="test-role">Product Designer, Figma</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+        <div class="test-card">
+          <div class="test-quote">"</div>
+          <div class="test-stars">★★★★★</div>
+          <div class="test-text">The typography section alone is worth bookmarking. A resource that truly understands that great type makes or breaks a brand.</div>
+          <div class="d-flex align-items-center gap-3">
+            <img src="https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=100" alt="Marcus" class="test-avatar"/>
+            <div><div class="test-name">Marcus Webb</div><div class="test-role">Brand Director, Stripe</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+        <div class="test-card">
+          <div class="test-quote">"</div>
+          <div class="test-stars">★★★★★</div>
+          <div class="test-text">6 months of client work with these palettes. Every client has complimented the colors without knowing where they came from!</div>
+          <div class="d-flex align-items-center gap-3">
+            <img src="https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg?auto=compress&cs=tinysrgb&w=100" alt="Priya" class="test-avatar"/>
+            <div><div class="test-name">Priya Nair</div><div class="test-role">Freelance UX Designer</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FAQ ══ -->
+<section class="sec faq-sec" id="faq">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-5 mb-5 mb-lg-0" data-aos="fade-right">
+        <div class="sec-label">FAQ</div>
+        <h2 class="sec-title">Got<br>Questions?</h2>
+        <p class="sec-sub mt-3">Everything you need to know about Prism Studio and using our palettes.</p>
+        <img src="https://images.pexels.com/photos/1029604/pexels-photo-1029604.jpeg?auto=compress&cs=tinysrgb&w=500" alt="FAQ" class="img-fluid rounded-4 mt-4 shadow" style="max-height:220px;object-fit:cover;width:100%"/>
+      </div>
+      <div class="col-lg-7" data-aos="fade-left">
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">Are all palettes really free to use? <i class="bi bi-plus-circle-fill"></i></button>
+          <div class="faq-a">Yes, absolutely. All palettes, font pairings, and style guides are 100% free — no attribution required, no sign-up needed. Use them in personal or commercial projects without any restrictions.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">Can I export palettes to Figma or CSS? <i class="bi bi-plus-circle-fill"></i></button>
+          <div class="faq-a">Yes. Every palette can be exported as CSS custom properties, SCSS variables, JSON tokens, and ASE files for Figma, Adobe, and other design tools. Click any hex chip to copy instantly.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">How are these palettes created? <i class="bi bi-plus-circle-fill"></i></button>
+          <div class="faq-a">Each palette is hand-crafted by experienced designers with a deep understanding of color theory, brand psychology, and accessibility. We test every combination for contrast ratios and real-world usability.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">Do you offer custom palette design? <i class="bi bi-plus-circle-fill"></i></button>
+          <div class="faq-a">Yes! We offer custom color system design for brands, startups, and design teams. Reach out via the contact section and we'll craft something unique for your project.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">Are the images on the site copyright-free? <i class="bi bi-plus-circle-fill"></i></button>
+          <div class="faq-a">All photos on this website are sourced from Pexels, which provides free-to-use images under the Pexels License. They can be used for commercial and non-commercial purposes without attribution.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ NEWSLETTER ══ -->
+<section class="sec nl-sec py-5" style="padding:4rem 0!important">
+  <div class="container">
+    <div class="row align-items-center gy-4">
+      <div class="col-lg-5" data-aos="fade-right">
+        <div class="sec-label">Newsletter</div>
+        <h2 class="sec-title" style="font-size:2.5rem">Stay in the<br>color loop</h2>
+        <p class="sec-sub mt-2">New palettes, style drops and design tips. No spam, just beautiful color every week.</p>
+      </div>
+      <div class="col-lg-6 offset-lg-1" data-aos="fade-left">
+        <div class="d-flex gap-2 flex-wrap">
+          <input type="email" class="nl-input" placeholder="your@email.com"/>
+          <button class="btn-fire" onclick="this.innerHTML='Subscribed ✓';this.style.background='var(--grad-meadow)'">Subscribe <i class="bi bi-send"></i></button>
+        </div>
+        <div style="font-size:.75rem;color:var(--text3);margin-top:.8rem;font-family:var(--font-ui)"><i class="bi bi-shield-check me-1" style="color:var(--lime)"></i>No spam. Unsubscribe anytime. Free forever.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CTA ══ -->
+<section class="sec cta-sec" id="cta">
+  <div class="cta-bg-blob blob1"></div>
+  <div class="cta-bg-blob blob2"></div>
+  <div class="cta-bg-blob blob3"></div>
+  <div class="container position-relative text-center">
+    <div class="col-lg-9 mx-auto" data-aos="fade-up">
+      <div class="sec-label justify-content-center">Get Started</div>
+      <h2 class="cta-title mb-4">Your color.<br>Your <span class="highlight">masterpiece.</span></h2>
+      <p class="mb-5" style="color:var(--text2);font-size:1.05rem;max-width:480px;margin-inline:auto;line-height:1.75">
+        Pick a palette, choose a style, find your font. The rest is just making things beautiful. Always free.
+      </p>
+      <div class="d-flex gap-3 justify-content-center flex-wrap">
+        <a href="#palettes" class="btn-fire btn-lg">Explore All Palettes <i class="bi bi-arrow-right"></i></a>
+        <a href="#typography" class="btn-outline-warm btn-lg">View Typography <i class="bi bi-fonts"></i></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FOOTER ══ -->
+<footer>
+  <div class="container">
+    <div class="row g-5">
+      <div class="col-lg-4">
+        <div class="footer-brand">Prism<span class="dot">.</span></div>
+        <div class="footer-desc">Open source color design system. Curated palettes, typography, and style guides for modern digital products.</div>
+        <div class="d-flex gap-2 mt-4">
+          <a href="#" class="footer-soc"><i class="bi bi-twitter-x"></i></a>
+          <a href="#" class="footer-soc"><i class="bi bi-github"></i></a>
+          <a href="#" class="footer-soc"><i class="bi bi-dribbble"></i></a>
+          <a href="#" class="footer-soc"><i class="bi bi-instagram"></i></a>
+          <a href="#" class="footer-soc"><i class="bi bi-youtube"></i></a>
+        </div>
+      </div>
+      <div class="col-6 col-lg-2">
+        <div class="footer-head">Palettes</div>
+        <ul class="footer-links">
+          <li><a href="#">Ocean Breeze</a></li>
+          <li><a href="#">Desert Sunset</a></li>
+          <li><a href="#">Forest Mystic</a></li>
+          <li><a href="#">Urban Neon</a></li>
+          <li><a href="#">All Palettes →</a></li>
+        </ul>
+      </div>
+      <div class="col-6 col-lg-2">
+        <div class="footer-head">Resources</div>
+        <ul class="footer-links">
+          <li><a href="#">Typography</a></li>
+          <li><a href="#">Style Guides</a></li>
+          <li><a href="#">CSS Variables</a></li>
+          <li><a href="#">Figma Plugin</a></li>
+          <li><a href="#">Documentation</a></li>
+        </ul>
+      </div>
+      <div class="col-6 col-lg-2">
+        <div class="footer-head">Tools</div>
+        <ul class="footer-links">
+          <li><a href="#">Color Picker</a></li>
+          <li><a href="#">Contrast Check</a></li>
+          <li><a href="#">Gradient Builder</a></li>
+          <li><a href="#">Export Tool</a></li>
+        </ul>
+      </div>
+      <div class="col-6 col-lg-2">
+        <div class="footer-head">Company</div>
+        <ul class="footer-links">
+          <li><a href="#">About</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Changelog</a></li>
+          <li><a href="#">License</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom d-flex justify-content-between flex-wrap gap-2">
+      <span>© 2025 Kanaka Raju. All palettes are original works.</span>
+      <span>Open source · Copyright-free · Made with love for designers</span>
+    </div>
+  </div>
+</footer>
+
+<button id="btt" onclick="window.scrollTo({top:0,behavior:'smooth'})"><i class="bi bi-arrow-up"></i></button>
+
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+<script>
+AOS.init({ duration:800, once:true, offset:50 });
+
+// Cursor
+const cur = document.getElementById('cur'), ring = document.getElementById('cur-ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{
+  mx=e.clientX; my=e.clientY;
+  cur.style.left=mx+'px'; cur.style.top=my+'px';
+});
+(function anim(){ rx+=(mx-rx)*.12; ry+=(my-ry)*.12;
+  ring.style.left=rx+'px'; ring.style.top=ry+'px'; requestAnimationFrame(anim);
+})();
+document.querySelectorAll('a,button,.p-card,.style-card,.g-item,.tool-card').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{ cur.style.cssText+=';width:22px;height:22px;background:var(--tangerine)'; ring.style.cssText+=';width:64px;height:64px;opacity:.25'; });
+  el.addEventListener('mouseleave',()=>{ cur.style.cssText+=';width:14px;height:14px;background:var(--coral)'; ring.style.cssText+=';width:42px;height:42px;opacity:.45'; });
+});
+
+// Navbar scroll
+window.addEventListener('scroll',()=>{ document.getElementById('nav').classList.toggle('scrolled',scrollY>60); });
+
+// Progress bar
+window.addEventListener('scroll',()=>{
+  const p=(scrollY/(document.documentElement.scrollHeight-innerHeight))*100;
+  document.getElementById('prog').style.width=p+'%';
+});
+
+// Back to top
+window.addEventListener('scroll',()=>{ document.getElementById('btt').classList.toggle('show',scrollY>400); });
+
+// Counter
+const cobs = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{ if(e.isIntersecting){ runCount(e.target); cobs.unobserve(e.target); }});
+},{threshold:.5});
+document.querySelectorAll('[data-count]').forEach(el=>cobs.observe(el));
+function runCount(el){
+  const t=+el.dataset.count, d=1800, s=performance.now();
+  (function step(n){ const p=Math.min((n-s)/d,1), v=Math.round((1-Math.pow(1-p,3))*t);
+    el.textContent=v.toLocaleString(); if(p<1) requestAnimationFrame(step);
+    else el.textContent=t>=1000?t.toLocaleString()+'+':t+(t===100?'%':'+'); })(s);
+}
+
+// Hex copy
+document.querySelectorAll('.p-hex').forEach(h=>{
+  h.title='Click to copy'; h.addEventListener('click',()=>{
+    navigator.clipboard.writeText(h.textContent).then(()=>{
+      const o=h.textContent; h.textContent='Copied!';
+      setTimeout(()=>h.textContent=o,1400);
+    });
+  });
+});
+
+// FAQ
+function toggleFaq(btn){
+  const a=btn.nextElementSibling;
+  const open=a.classList.toggle('open');
+  btn.classList.toggle('open',open);
+  document.querySelectorAll('.faq-a').forEach(x=>{ if(x!==a){ x.classList.remove('open'); x.previousElementSibling.classList.remove('open'); }});
+}
+</script>
+</body>
+</html>
